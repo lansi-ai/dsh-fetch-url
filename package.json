@@ -1,0 +1,42 @@
+{
+  "name": "@deepseek-ai/dsh-fetch-url",
+  "version": "0.1.0",
+  "description": "DSH plugin that registers a fetch_url tool: fetch any URL (direct for domestic targets, HTTP CONNECT proxy for overseas) and return a bounded text/JSON summary. Reuses the battle-tested Node TLS logic from tools/fetch-url.cjs, exposed as a model-callable tool.",
+  "license": "MIT",
+  "type": "module",
+  "main": "lib/index.mjs",
+  "types": "lib/index.d.mts",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.mts",
+      "default": "./lib/index.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/index.mjs",
+    "lib/index.d.mts",
+    "cordis.patch.yml",
+    "README.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "scripts": {
+    "build": "tsdown --config tsdown.config.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1",
+    "@deepseek-ai/dsh-tools": "^0.1.0-rc.7"
+  },
+  "devDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1",
+    "@deepseek-ai/dsh-tools": "^0.1.0-rc.7",
+    "@types/node": "^26.2.0",
+    "tsdown": "^0.22.14",
+    "typescript": "^5.6.0"
+  }
+}

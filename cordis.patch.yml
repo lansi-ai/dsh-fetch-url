@@ -1,0 +1,7 @@
+# dsh-fetch-url bundle patch: inserts the host plugin row into the web
+# profile roster. The node half (exports ".") registers the fetch_url tool on
+# ctx.tools, making it callable by the model in every session of this profile.
+# Install with: dsh plugin --profile <name> add @deepseek-ai/dsh-fetch-url
+- insert:
+    - id: fetch-url
+      name: '@deepseek-ai/dsh-fetch-url'
