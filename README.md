@@ -1,4 +1,4 @@
-# @lnyanhongyan/dsh-fetch-url
+# @lansi-ai/dsh-fetch-url
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](package.json)
@@ -24,7 +24,7 @@
 
 ```bash
 # 从 GitHub 安装（推荐）
-dsh plugin --profile web add github:lnyanhongyan/dsh-fetch-url
+dsh plugin --profile web add github:lansi-ai/dsh-fetch-url
 
 # 从本地目录安装（开发用）
 dsh plugin --profile web add E:/Projects/DSH/plugins/dsh-fetch-url
@@ -118,7 +118,7 @@ A: profile 未装 / 未重启；确认 `dsh.profile.bundles` 与符号链接。
 
 ### Q: 如何卸载？
 ```bash
-dsh plugin --profile web remove @lnyanhongyan/dsh-fetch-url
+dsh plugin --profile web remove @lansi-ai/dsh-fetch-url
 # 重启 DSH
 ```
 
@@ -130,4 +130,4 @@ dsh plugin --profile web remove @lnyanhongyan/dsh-fetch-url
 
 - [DeepSeek Harness 文档](https://github.com/deepseek-ai/deepseek-harness)
 - [DSH 插件开发流程](IMPLEMENT.md)
-- [GitHub 仓库](https://github.com/lnyanhongyan/dsh-fetch-url)
+- [GitHub 仓库](https://github.com/lansi-ai/dsh-fetch-url)

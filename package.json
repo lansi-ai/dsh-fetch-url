@@ -1,5 +1,5 @@
 {
-  "name": "@lnyanhongyan/dsh-fetch-url",
+  "name": "@lansi-ai/dsh-fetch-url",
   "version": "0.1.0",
   "description": "DSH plugin that registers a fetch_url tool: fetch any URL (direct for domestic targets, HTTP CONNECT proxy for overseas) and return a bounded text/JSON summary. Reuses the battle-tested Node TLS logic from tools/fetch-url.cjs, exposed as a model-callable tool.",
   "license": "MIT",

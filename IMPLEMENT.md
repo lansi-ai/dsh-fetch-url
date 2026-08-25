@@ -1,7 +1,7 @@
 # dsh-fetch-url 插件实现文档（跨窗口复用）
 
 > 本文档自包含：在**任意 DSH 窗口**中，照着本文件即可完整创建、构建、安装
-> `@lnyanhongyan/dsh-fetch-url` 插件——注册一个模型可调用的 `fetch_url` 工具
+> `@lansi-ai/dsh-fetch-url` 插件——注册一个模型可调用的 `fetch_url` 工具
 > （直连抓境内网页 / 走 7890 代理抓境外网页，返回有界摘要）。
 >
 > 文内所有代码**已在本机编译验证通过**（tsc + tsdown 均 exit 0），可直接照抄。
@@ -46,7 +46,7 @@ E:\Projects\DSH\plugins\dsh-fetch-url\
 
 ```json
 {
-  "name": "@lnyanhongyan/dsh-fetch-url",
+  "name": "@lansi-ai/dsh-fetch-url",
   "version": "0.1.0",
   "description": "DSH plugin that registers a fetch_url tool: fetch any URL (direct for domestic targets, HTTP CONNECT proxy for overseas) and return a bounded text/JSON summary.",
   "license": "MIT",
@@ -117,7 +117,7 @@ E:\Projects\DSH\plugins\dsh-fetch-url\
 ```ts
 import { defineConfig } from 'tsdown'
 
-const PLUGIN_ID = '@lnyanhongyan/dsh-fetch-url'
+const PLUGIN_ID = '@lansi-ai/dsh-fetch-url'
 
 /**
  * Single-artifact host plugin: lib/index.mjs (ESM, node) registers the
@@ -147,10 +147,10 @@ export default defineConfig({
 # dsh-fetch-url bundle patch: inserts the host plugin row into the web
 # profile roster. The node half (exports ".") registers the fetch_url tool on
 # ctx.tools, making it callable by the model in every session of this profile.
-# Install with: dsh plugin --profile <name> add @lnyanhongyan/dsh-fetch-url
+# Install with: dsh plugin --profile <name> add @lansi-ai/dsh-fetch-url
 - insert:
     - id: fetch-url
-      name: '@lnyanhongyan/dsh-fetch-url'
+      name: '@lansi-ai/dsh-fetch-url'
 ```
 
 ### 3.5 `src/index.ts`（插件主体，已编译验证）
@@ -440,8 +440,8 @@ $profilePkg = 'C:\dsh-data\opendesign\profiles\web\package.json'
 ```
 
 1. **注册为 profile 依赖 + bundle**：编辑 `$profilePkg`，
-   - `dependencies` 增加：`"@lnyanhongyan/dsh-fetch-url": "link:E:/Projects/DSH/plugins/dsh-fetch-url"`
-   - `dsh.profile.bundles` 数组增加：`"@lnyanhongyan/dsh-fetch-url"`
+   - `dependencies` 增加：`"@lansi-ai/dsh-fetch-url": "link:E:/Projects/DSH/plugins/dsh-fetch-url"`
+   - `dsh.profile.bundles` 数组增加：`"@lansi-ai/dsh-fetch-url"`
 
 2. **在 profile node_modules 建立符号链接**（与已有插件一致）：
 
