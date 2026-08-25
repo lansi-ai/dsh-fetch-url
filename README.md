@@ -22,6 +22,10 @@
 
 ### 安装
 
+安装方式决定 `fetch_url` 工具对哪些会话可见，分**两种**：**全局安装**（所有预设的会话可见）和**预设安装**（只有加入指定 preset 的会话可见，类似 `pwsh` 只在部分 preset 出现）。
+
+#### 方式一：全局安装（默认，所有预设可见）
+
 ```bash
 # 从 GitHub 安装（推荐）
 dsh plugin --profile web add github:lansi-ai/dsh-fetch-url
@@ -32,6 +36,43 @@ dsh plugin --profile web add ./dsh-fetch-url
 # 或从本地打包文件安装
 dsh plugin --profile web add ./lansi-ai-dsh-fetch-url-0.1.0.tgz
 ```
+
+> 说明：这会把它写进 profile 的 `dsh.profile.bundles`（全局插件层）。按照 DSH 的作用域链 `agent → preset → global`，全局层工具**每个 preset 的 agent 都会继承**——所有会话都能看到 `fetch_url`。
+
+#### 方式二：预设（Preset）安装（只对特定预设可见）
+
+仅让某个自定义 preset 的会话拥有 `fetch_url`，其它 preset 看不到。步骤：
+
+1. **从 profile 全局层摘除该插件**（若此前已全局装过），避免同名工具在"全局层 + preset 层"重复注册：
+   ```bash
+   dsh plugin --profile web remove @lansi-ai/dsh-fetch-url
+   ```
+
+2. **在目标 preset 的组合文件里加一行**，指向插件入口。自建预设放在 `{DSH_HOME}/.agent-presets/<id>/`，在它的 `agent.cordis.yml` 里追加：
+   ```yaml
+   - id: fetch-url
+     name: '<插件可被加载的入口>'   # 见下方"入口写法"
+   ```
+
+3. **重启 DSH**，新建会话时选择该 preset 即可。
+
+> 作用域机制：preset 组合挂载在"常驻 agent scope"上，工具注册进该 preset 层，只有加入它的会话可见（`agent → preset → global` 链上的最近遮蔽）。
+
+**关于"入口写法"（关键）：**
+
+preset 行会让 DSH 直接 `import` 插件模块，因此 `name` 必须是一个 **Node 可加载的模块标识符**：
+
+- ✅ **指向入口文件**（已验证可行；Node 拒绝"目录"导入 `ERR_UNSUPPORTED_DIR_IMPORT`）：
+  ```yaml
+  name: 'E:/path/to/dsh-fetch-url/lib/index.mjs'
+  ```
+- ✅ **npm 包名**（当 DSH 能解析它时最可移植）：
+  ```yaml
+  name: '@lansi-ai/dsh-fetch-url'
+  ```
+  > 注意：DSH 的 preset 加载器用 **harness 安装目录**做裸包名解析（`harnessBase`），不是 profile 的 `node_modules`。要让裸包名可用，需把插件装到 harness 可解析的位置（如 `link:` 进 harness 的 node_modules）或发布到 npm。
+
+❌ **不要写目录**：`name: 'E:/path/to/dsh-fetch-url'`（Node 报 `ERR_UNSUPPORTED_DIR_IMPORT`，会导致该行 inactive、整个 preset 挂载失败，会话会退回默认预设）。
 
 ### 重启 DSH
 
@@ -116,14 +157,18 @@ A: CONNECT 后没等代理 200 头就 TLS——代码已处理；若仍出现，
 ### Q: GitHub 返回 400？
 A: 缺 `Host` 头——代码已补显式 `Host`。
 
-### Q: 其他窗口没有该工具？
-A: profile 未装 / 未重启；确认 `dsh.profile.bundles` 与符号链接。
+### Q: 其他窗口/某些预设没有该工具？
+A: 这是正常的——工具到底在哪些会话可见，取决于你用的是**全局安装**还是**预设安装**（见上文"安装"）。若预期全局可见却没有，检查 `dsh.profile.bundles` 里是否有它、是否已重启；若预期只在某 preset 可见，确认对应 preset 的组合文件里加了 `fetch-url` 行。
 
 ### Q: 如何卸载？
+
+**全局安装**卸载：
 ```bash
 dsh plugin --profile web remove @lansi-ai/dsh-fetch-url
 # 重启 DSH
 ```
+
+**预设安装**卸载：从该 preset 的 `agent.cordis.yml` 里删掉 `fetch-url` 那一行，重启 DSH 即可（不影响插件的代码，只是不再被该 preset 装载）。
 
 ## 📄 许可证
 
