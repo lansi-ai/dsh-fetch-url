@@ -18,6 +18,26 @@
 | 💾 落盘 | 传 `outFile` 可把完整正文写入本地文件 |
 | ⏱️ 超时控制 | 默认 20s 超时，支持 AbortSignal 取消 |
 
+## 🚀 快速开始
+
+### 安装
+
+```bash
+# 从 GitHub 安装（推荐）
+dsh plugin --profile web add github:lnyanhongyan/dsh-fetch-url
+
+# 从本地目录安装（开发用）
+dsh plugin --profile web add E:/Projects/DSH/plugins/dsh-fetch-url
+```
+
+### 重启 DSH
+
+```bash
+dsh web --port 3081
+```
+
+重启后 `fetch_url` 工具即出现在模型可用工具列表中，可直接调用。
+
 ## 🚀 使用方法
 
 安装并重启 DSH 后，在任意会话中模型可直接调用：
