@@ -1,6 +1,6 @@
 import { defineConfig } from 'tsdown'
 
-const PLUGIN_ID = '@deepseek-ai/dsh-fetch-url'
+const PLUGIN_ID = '@lnyanhongyan/dsh-fetch-url'
 
 /**
  * Single-artifact host plugin: lib/index.mjs (ESM, node) registers the

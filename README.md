@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-fetch-url
+# @lnyanhongyan/dsh-fetch-url
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](package.json)
@@ -118,7 +118,7 @@ A: profile 未装 / 未重启；确认 `dsh.profile.bundles` 与符号链接。
 
 ### Q: 如何卸载？
 ```bash
-dsh plugin --profile web remove @deepseek-ai/dsh-fetch-url
+dsh plugin --profile web remove @lnyanhongyan/dsh-fetch-url
 # 重启 DSH
 ```
 
