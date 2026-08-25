@@ -26,8 +26,11 @@
 # 从 GitHub 安装（推荐）
 dsh plugin --profile web add github:lansi-ai/dsh-fetch-url
 
-# 从本地目录安装（开发用）
-dsh plugin --profile web add E:/Projects/DSH/plugins/dsh-fetch-url
+# 从本地目录安装（开发用；路径相对你所在的目录）
+dsh plugin --profile web add ./dsh-fetch-url
+
+# 或从本地打包文件安装
+dsh plugin --profile web add ./lansi-ai-dsh-fetch-url-0.1.0.tgz
 ```
 
 ### 重启 DSH
