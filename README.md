@@ -64,7 +64,7 @@ preset 行会让 DSH 直接 `import` 插件模块，因此 `name` 必须是一�
 
 - ✅ **指向入口文件**（已验证可行；Node 拒绝"目录"导入 `ERR_UNSUPPORTED_DIR_IMPORT`）：
   ```yaml
-  name: 'E:/path/to/dsh-fetch-url/lib/index.mjs'
+  name: '<你的插件目录>/lib/index.mjs'
   ```
 - ✅ **npm 包名**（当 DSH 能解析它时最可移植）：
   ```yaml
@@ -72,7 +72,7 @@ preset 行会让 DSH 直接 `import` 插件模块，因此 `name` 必须是一�
   ```
   > 注意：DSH 的 preset 加载器用 **harness 安装目录**做裸包名解析（`harnessBase`），不是 profile 的 `node_modules`。要让裸包名可用，需把插件装到 harness 可解析的位置（如 `link:` 进 harness 的 node_modules）或发布到 npm。
 
-❌ **不要写目录**：`name: 'E:/path/to/dsh-fetch-url'`（Node 报 `ERR_UNSUPPORTED_DIR_IMPORT`，会导致该行 inactive、整个 preset 挂载失败，会话会退回默认预设）。
+❌ **不要写目录**：`name: '<你的插件目录>'`（Node 报 `ERR_UNSUPPORTED_DIR_IMPORT`，会导致该行 inactive、整个 preset 挂载失败，会话会退回默认预设）。
 
 ### 重启 DSH
 
