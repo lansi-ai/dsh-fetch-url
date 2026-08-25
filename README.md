@@ -41,38 +41,29 @@ dsh plugin --profile web add ./lansi-ai-dsh-fetch-url-0.1.0.tgz
 
 #### 方式二：预设（Preset）安装（只对特定预设可见）
 
-仅让某个自定义 preset 的会话拥有 `fetch_url`，其它 preset 看不到。步骤：
+想让 `fetch_url` 只在某个自定义 preset 的会话里出现，其它 preset 看不到（类似 `pwsh` 只在部分预设可用）：
 
-1. **从 profile 全局层摘除该插件**（若此前已全局装过），避免同名工具在"全局层 + preset 层"重复注册：
-   ```bash
-   dsh plugin --profile web remove @lansi-ai/dsh-fetch-url
-   ```
-
-2. **在目标 preset 的组合文件里加一行**，指向插件入口。自建预设放在 `{DSH_HOME}/.agent-presets/<id>/`，在它的 `agent.cordis.yml` 里追加：
+1. **先让本地有插件的文件**（两种任选）：
+   - `dsh plugin --profile web add github:lansi-ai/dsh-fetch-url`（会下载进 profile）；
+   - 或把插件目录放到你方便的位置（如 clone 到本地）。
+   > 如果之前已经用**方式一**全局装过，又想改用预设方式，先移除全局注册再继续（避免同一个工具在两层重复出现）：
+   > ```bash
+   > dsh plugin --profile web remove @lansi-ai/dsh-fetch-url
+   > ```
+2. **把目标预设组合文件里加一行**。预设文件在 `{DSH_HOME}/.agent-presets/<预设名>/agent.cordis.yml`，追加：
    ```yaml
    - id: fetch-url
-     name: '<插件可被加载的入口>'   # 见下方"入口写法"
+     name: '<插件路径>/lib/index.mjs'
    ```
+   `<插件路径>` 填插件所在**目录**的完整路径，写到 `lib/index.mjs` 这个文件为止，例如：
+   ```
+   /你的插件所在目录/dsh-fetch-url/lib/index.mjs
+   ```
+3. **重启 DSH**，新建会话时选择该预设，即可使用。
 
-3. **重启 DSH**，新建会话时选择该 preset 即可。
+> **入口填什么（就这么填）：** `name` 的值就是 **插件构建产物 `lib/index.mjs` 的完整路径**，写清楚到那个文件就行。路径分隔符用 `/`（不要用 `\`）。**千万别只填到插件目录**（那样会加载失败、整个预设挂不上，会话退回默认预设）。
 
-> 作用域机制：preset 组合挂载在"常驻 agent scope"上，工具注册进该 preset 层，只有加入它的会话可见（`agent → preset → global` 链上的最近遮蔽）。
-
-**关于"入口写法"（关键）：**
-
-preset 行会让 DSH 直接 `import` 插件模块，因此 `name` 必须是一个 **Node 可加载的模块标识符**：
-
-- ✅ **指向入口文件**（已验证可行；Node 拒绝"目录"导入 `ERR_UNSUPPORTED_DIR_IMPORT`）：
-  ```yaml
-  name: '<你的插件目录>/lib/index.mjs'
-  ```
-- ✅ **npm 包名**（当 DSH 能解析它时最可移植）：
-  ```yaml
-  name: '@lansi-ai/dsh-fetch-url'
-  ```
-  > 注意：DSH 的 preset 加载器用 **harness 安装目录**做裸包名解析（`harnessBase`），不是 profile 的 `node_modules`。要让裸包名可用，需把插件装到 harness 可解析的位置（如 `link:` 进 harness 的 node_modules）或发布到 npm。
-
-❌ **不要写目录**：`name: '<你的插件目录>'`（Node 报 `ERR_UNSUPPORTED_DIR_IMPORT`，会导致该行 inactive、整个 preset 挂载失败，会话会退回默认预设）。
+> 提示：如果你不确定插件目录在哪、或者路径填错，最省事还是用上面的**方式一全局安装**——它会自动下载并配好路径。
 
 ### 重启 DSH
 
